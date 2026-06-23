@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontier AI Governance Map v4</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #060D18; color: #C8D4E0; font-family: 'Inter','Segoe UI',system-ui,sans-serif; padding: 16px 22px 32px; }
+h1 { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #3A5A78; margin-bottom: 2px; }
+.subtitle { font-size: 17px; font-weight: 300; color: #8AAAC0; margin-bottom: 14px; }
+.legends { display: flex; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
+.legend-group .legend-title { font-size: 8px; text-transform: uppercase; letter-spacing: 0.14em; color: #243040; margin-bottom: 5px; }
+.legend-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: #4A6880; }
+.l-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.l-line { width: 20px; height: 0; border-top-width: 2px; border-top-style: solid; flex-shrink: 0; }
+.l-border { width: 11px; height: 11px; border-radius: 50%; background: transparent; flex-shrink: 0; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 8px; }
+.filter-btn { padding: 3px 11px; border-radius: 3px; border: 1px solid #1A3050; background: transparent; color: #3A5870; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+.filter-btn:hover { border-color: #2A5080; color: #6A90B0; }
+.filter-btn.active { background: #1A3050; color: #8AAAC0; border-color: #2A6090; }
+.instruction { font-size: 9.5px; color: #1E2D3D; margin-bottom: 10px; font-style: italic; }
+.svg-wrapper { overflow-x: auto; }
+svg { display: block; }
+.info-panel { background: #0A1624; border: 1px solid #1A2E44; border-radius: 6px; padding: 14px 18px; margin-top: 12px; display: none; }
+.info-panel.visible { display: flex; gap: 28px; flex-wrap: wrap; }
+.info-col { min-width: 180px; flex: 1; }
+.info-name { font-size: 14px; font-weight: 600; color: #D4E0EC; margin-bottom: 2px; }
+.info-geo { font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.12em; color: #2E5070; margin-bottom: 8px; }
+.info-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 8.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.info-section { margin-bottom: 8px; }
+.info-label { font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: #254060; margin-bottom: 2px; }
+.info-val { font-size: 10.5px; line-height: 1.5; color: #7A9AB8; }
+.info-gap { font-size: 10.5px; line-height: 1.5; color: #8A5050; }
+.conn-list { margin-top: 2px; }
+.conn-item { font-size: 9.5px; color: #3A5A78; padding: 2px 0; display: flex; align-items: flex-start; gap: 5px; line-height: 1.4; }
+.conn-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.conn-arrow { font-size: 8px; flex-shrink: 0; margin-top: 2px; }
+.conn-type { color: #1E3040; font-size: 8.5px; margin-left: 2px; }
+</style>
+</head>
+<body>
+<h1>Frontier AI Governance</h1>
+<div class="subtitle">Strategic Actor Map v4 &middot; 39 Actors &middot; Mechanisms &amp; Dependencies</div>
+
+<div class="legends">
+  <div class="legend-group">
+    <div class="legend-title">Actor Type</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="l-dot" style="background:#E8A83E"></div>Intergovernmental</div>
+      <div class="legend-item"><div class="l-dot" style="background:#B07DD4"></div>Voluntary / Civil Society</div>
+      <div class="legend-item"><div class="l-dot" style="background:#E05A40"></div>Evaluation Org</div>
+      <div class="legend-item"><div class="l-dot" style="background:#4B9FE1"></div>National / Regulatory</div>
+      <div class="legend-item"><div class="l-dot" style="background:#E07830"></div>Compute / Export Control</div>
+      <div class="legend-item"><div class="l-dot" style="background:#7AB8A0"></div>Corporate Lab</div>
+      <div class="legend-item"><span style="font-size:8.5px;color:#243040">Node size = power level</span></div>
+    </div>
+  </div>
+  <div class="legend-group">
+    <div class="legend-title">Enforcement Strength (border)</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="l-border" style="border:1.2px dashed #888"></div>Voluntary</div>
+      <div class="legend-item"><div class="l-border" style="border:1.5px dotted #888"></div>Soft / Political</div>
+      <div class="legend-item"><div class="l-border" style="border:1.5px dashed #bbb"></div>Pending</div>
+      <div class="legend-item"><div class="l-border" style="border:2px solid #888"></div>Partial</div>
+      <div class="legend-item"><div class="l-border" style="border:3px solid #ccc"></div>Legally Binding</div>
+    </div>
+  </div>
+  <div class="legend-group">
+    <div class="legend-title">Relationship Type (edge)</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="l-line" style="border-color:#FF6060"></div>Regulatory</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#C8882A;border-top-style:dashed"></div>Influence</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#4A9A78;border-top-style:dotted;border-top-width:3px"></div>Partnership</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#4A7FBF"></div>Signatory</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#9060B8"></div>Membership</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#E05A40;border-top-style:dashed"></div>Evaluates</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#E07830"></div>Compute / Export</div>
+      <div class="legend-item"><div class="l-line" style="border-color:#3A8AB0;border-top-style:dashed"></div>Coordinates</div>
+    </div>
+  </div>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="intergovernmental">Intergovernmental</button>
+  <button class="filter-btn" data-filter="voluntary">Voluntary</button>
+  <button class="filter-btn" data-filter="evaluation">Evaluation</button>
+  <button class="filter-btn" data-filter="national">National</button>
+  <button class="filter-btn" data-filter="compute">Compute</button>
+  <button class="filter-btn" data-filter="corporate">Corporate</button>
+</div>
+<p class="instruction">Filter by actor type &middot; Click any node for details and connections &middot; Click background to reset</p>
+
+<div class="svg-wrapper">
+  <svg id="map" viewBox="0 0 1500 840" style="width:100%;min-width:1000px;height:auto;"></svg>
+</div>
+<div class="info-panel" id="info">
+  <div class="info-col" id="info-main"></div>
+  <div class="info-col" id="info-conn"></div>
+</div>
+
+<script>
+const SVG_W=1500, MRG=60;
+const ROW_Y=[112,300,492,690];
+const ROW_TOTALS=[5,7,13,15];
+const ROW_LABELS=['INTERGOVERNMENTAL','VOLUNTARY \u00b7 CIVIL SOCIETY \u00b7 EVALUATION ORGS','NATIONAL / REGULATORY','CORPORATE'];
+const ROW_BG=['rgba(232,168,62,0.05)','rgba(176,125,212,0.05)','rgba(75,159,225,0.05)','rgba(122,184,160,0.05)'];
+const NCOL={intergovernmental:'#E8A83E',voluntary:'#B07DD4',evaluation:'#E05A40',national:'#4B9FE1',compute:'#E07830',corporate:'#7AB8A0'};
+const PR={'LOW':14,'LOW-MEDIUM':18,'MEDIUM':24,'MEDIUM-HIGH':30,'HIGH':37};
+const ENF={none:{d:'7,5',w:1.2},soft:{d:'2,3',w:1.5},pending:{d:'8,3,2,3',w:1.5},partial:{d:'',w:2},binding:{d:'',w:3},internal:{d:'',w:1}};
+const ES={
+  regulatory:{c:'#FF6060',d:'',w:1.5,o:0.8},influence:{c:'#C8882A',d:'5,4',w:1,o:0.55},
+  partnership:{c:'#4A9A78',d:'2,3',w:1.5,o:0.7},signatory:{c:'#4A7FBF',d:'',w:1.5,o:0.65},
+  member:{c:'#9060B8',d:'',w:1,o:0.55},enforces:{c:'#FF4040',d:'',w:2.5,o:0.9},
+  produced:{c:'#C8882A',d:'',w:1.5,o:0.65},standards:{c:'#7060A8',d:'4,3',w:1,o:0.45},
+  evaluates:{c:'#E05A40',d:'3,2',w:1.5,o:0.7},compute:{c:'#E07830',d:'',w:1.5,o:0.7},
+  coordinates:{c:'#3A8AB0',d:'3,2',w:1.2,o:0.6}
+};
+const EL={regulatory:'Regulatory',influence:'Soft influence',partnership:'Partnership/MoU',signatory:'Signatory',member:'Member',enforces:'Enforces',produced:'Produced',standards:'Standards',evaluates:'Evaluates',compute:'Compute/export',coordinates:'Coordinates'};
+const MC={regulatory:'#FF6060',influence:'#C8882A',partnership:'#4A9A78',signatory:'#4A7FBF',member:'#9060B8',enforces:'#FF4040',produced:'#C8882A',standards:'#7060A8',evaluates:'#E05A40',compute:'#E07830',coordinates:'#3A8AB0'};
+
+function cx(row,idx){const t=ROW_TOTALS[row];return t===1?SVG_W/2:MRG+idx*(SVG_W-2*MRG)/(t-1);}
+
+const nodes=[
+  // ROW 0: INTERGOVERNMENTAL (5)
+  {id:'un',label:'UN\nAdvisory',row:0,idx:0,type:'intergovernmental',geography:'Global',power:'LOW',enforce:'none',
+   frameworks:'UN Advisory Body on AI — norm-setting and legitimacy framing. Produced recommendations but no operational mandate or enforcement capacity.',
+   enforcement:'Soft law; moral suasion only.',
+   gap:'No enforcement whatsoever; member state sovereignty blocks coordinated action; primarily a legitimacy frame.'},
+  {id:'oecd',label:'OECD AI\nPrinciples',row:0,idx:1,type:'intergovernmental',geography:'International (38 members)',power:'LOW-MEDIUM',enforce:'soft',
+   frameworks:'OECD AI Principles (2019, updated 2024) — foundational reference text for most national frameworks. Directly informed EU AI Act, US EO, UK strategy, Singapore, Canada, Japan.',
+   enforcement:'Member state commitments; peer review; no binding compliance.',
+   gap:'Voluntary adoption; implementation varies enormously; limited influence on non-OECD actors including China.'},
+  {id:'coe',label:'Council of\nEurope',row:0,idx:2,type:'intergovernmental',geography:'46 European states',power:'MEDIUM',enforce:'partial',
+   frameworks:'Framework Convention on AI (2024) — first legally binding international AI treaty. 46 Council of Europe member states plus observers. Covers human rights, democracy, rule of law in AI contexts. US participated as observer.',
+   enforcement:'Legally binding for signatories; monitoring mechanism under development.',
+   gap:'Binding only for signatories; US not a party; narrower than EU AI Act but broader geographic reach; implementation still developing.'},
+  {id:'g7',label:'G7/G20\nHiroshima',row:0,idx:3,type:'intergovernmental',geography:'International',power:'LOW-MEDIUM',enforce:'soft',
+   frameworks:'Hiroshima AI Process (2023) — produced Guiding Principles and Code of Conduct for advanced AI; endorsed Seoul Commitments; G20 New Delhi Declaration on AI.',
+   enforcement:'Political commitments only; no monitoring mechanism.',
+   gap:'Non-binding; produced Seoul Commitments but has no capacity to verify company compliance with them.'},
+  {id:'bletchley',label:'Bletchley\nSummit Series',row:0,idx:4,type:'intergovernmental',geography:'International',power:'MEDIUM',enforce:'none',
+   frameworks:'AI Safety Summit series — Bletchley 2023 (Bletchley Declaration, 28 countries + EU), Seoul 2024 (Seoul Commitments), Paris 2025. Most significant political-level AI safety process currently active.',
+   enforcement:'State declarations; political commitments; no enforcement mechanism.',
+   gap:'Depends on host country political will; US engagement uncertain; all commitments non-binding.'},
+
+  // ROW 1: VOLUNTARY / CIVIL SOCIETY / EVALUATION (7)
+  {id:'seoul',label:'Seoul\nCommitments',row:1,idx:0,type:'voluntary',geography:'International',power:'LOW-MEDIUM',enforce:'none',
+   frameworks:'Frontier AI Safety Commitments (2024) — signatories: Anthropic, OpenAI, Google DeepMind, Microsoft, Meta, Amazon, Cohere, Naver, Samsung, G42 and others. xAI NOT a signatory. Commitments: risk management, transparency, safety research, third-party evaluation.',
+   enforcement:'Voluntary; companies self-define compliance; no external verification body.',
+   gap:'Non-binding; no verification mechanism; xAI absent; companies define their own compliance standards. CSET (Beers 2025) notes this needs government follow-through to be meaningful.'},
+  {id:'fmf',label:'Frontier\nModel Forum',row:1,idx:1,type:'voluntary',geography:'International',power:'LOW',enforce:'none',
+   frameworks:'Industry consortium (Anthropic, OpenAI, Google DeepMind, Microsoft, Meta, Amazon) — information sharing, safety research funding, best practice coordination. CSET identifies as potential government coordination interface.',
+   enforcement:'Consensus-building; no enforcement.',
+   gap:'Members are direct competitors; commercially constrained; slow decision-making; information sharing limited by competitive sensitivity.'},
+  {id:'civil',label:'Civil Society\n& Academia',row:1,idx:2,type:'voluntary',geography:'International',power:'LOW-MEDIUM',enforce:'none',
+   frameworks:'RAND, CSET, Algorithm Watch, EFF, AI Now Institute, Human Rights Watch AI — independent research, accountability pressure, legal challenges, congressional testimony. CSET (Beers 2025) outlines targeted government action framework.',
+   enforcement:'Public pressure; litigation; policy advocacy; congressional testimony.',
+   gap:'Resource-constrained vs. industry; limited technical access to frontier model internals; policy uptake depends entirely on political will.'},
+  {id:'metr',label:'METR',row:1,idx:3,type:'evaluation',geography:'USA (international)',power:'MEDIUM',enforce:'partial',
+   frameworks:'Model Evaluation and Threat Research — formal evaluation agreements with Anthropic, OpenAI, Google DeepMind; time-horizon metric (Kwa et al. 2025); evaluated Claude Mythos Preview pre-release; findings directly inform RSP threshold determinations.',
+   enforcement:'Formal evaluation agreements; findings published in system cards; no authority to block or delay deployment.',
+   gap:'Cannot compel labs to act on findings; evaluation access depends on lab cooperation; cannot independently verify threshold determinations.'},
+  {id:'epoch',label:'Epoch AI',row:1,idx:4,type:'evaluation',geography:'International',power:'MEDIUM',enforce:'none',
+   frameworks:'Epoch Capabilities Index — aggregate capability tracking across benchmarks; evaluated Claude Mythos Preview (1.86x-4.3x slope ratio); provides external reference for capability trajectory claims in system cards and policy debates.',
+   enforcement:'Public benchmarking; no binding authority.',
+   gap:'ECI reflects benchmark performance not real-world risk; benchmark saturation limits discriminatory power at the current frontier.'},
+  {id:'apollo',label:'Apollo\nResearch',row:1,idx:5,type:'evaluation',geography:'International',power:'LOW-MEDIUM',enforce:'none',
+   frameworks:'Independent safety research — deceptive alignment, in-context scheming, behavioral evaluations; external evaluator for Anthropic, OpenAI, Google DeepMind, Microsoft; findings published independently.',
+   enforcement:'Published research; reputational pressure on labs; no binding authority.',
+   gap:'Access depends entirely on lab cooperation; limited funding relative to frontier labs; findings can be contextualized or disputed by labs in system cards.'},
+  {id:'iso',label:'ISO/IEEE\nStandards',row:1,idx:6,type:'voluntary',geography:'International',power:'MEDIUM',enforce:'partial',
+   frameworks:'ISO/IEC 42001 (AI Management System certification) and IEEE 7000 series — technical standards; referenced in EU AI Act conformity pathways and public procurement globally.',
+   enforcement:'Certification bodies; procurement influence; EU AI Act harmonized standards reference.',
+   gap:'Development timelines lag frontier capabilities; cost barriers; certification does not guarantee actual safety.'},
+
+  // ROW 2: NATIONAL / REGULATORY (13)
+  {id:'brazil',label:'Brazil /\nIndia',row:2,idx:0,type:'national',geography:'Brazil / India',power:'LOW-MEDIUM',enforce:'partial',
+   frameworks:'Brazil AI Bill (in development); India NITI Aayog AI Strategy; active in G20 AI governance; data sovereignty focus; significant frontier AI user base with limited domestic governance.',
+   enforcement:'Limited; emerging.',
+   gap:'Nascent frameworks; resource constraints; limited leverage over global frontier labs; risk of becoming recipient of governance arbitrage.'},
+  {id:'skorea',label:'South\nKorea',row:2,idx:1,type:'national',geography:'South Korea',power:'MEDIUM',enforce:'pending',
+   frameworks:'AI Basic Act (in development 2024-2025); National AI Committee; Korea AI Safety Institute (KAISI); Seoul Summit host — direct institutional stake in Seoul Commitments governance architecture.',
+   enforcement:'Pending legislation; KAISI evaluation partnerships in development.',
+   gap:'AI Basic Act not yet enacted; domestic industry (Samsung, Naver, Kakao) creates regulatory complexity.'},
+  {id:'uae',label:'UAE',row:2,idx:2,type:'national',geography:'UAE',power:'LOW-MEDIUM',enforce:'partial',
+   frameworks:'UAE: NAIA (National AI Office), UAE AI Strategy 2031, Mohamed Bin Zayed University of AI; investing heavily in frontier AI capabilities; G42 is state-connected; divested Chinese investments under US pressure.',
+   enforcement:'State-directed investment and regulation; partial enforcement.',
+   gap:'Safety governance secondary to strategic AI development goals; geopolitical complexity around G42.'},
+  {id:'canada',label:'Canada\nAIDA',row:2,idx:3,type:'national',geography:'Canada',power:'MEDIUM',enforce:'pending',
+   frameworks:'Artificial Intelligence and Data Act (AIDA) — proposed binding regulation for high-impact AI; registration, algorithmic impact assessments, transparency requirements; Pan-Canadian AI Strategy.',
+   enforcement:'Pending legal enforcement; not yet enacted.',
+   gap:'Multiple election cycles of delay; political uncertainty; may be substantially diluted before passage.'},
+  {id:'uk',label:'UK AISI',row:2,idx:4,type:'national',geography:'United Kingdom',power:'MEDIUM',enforce:'soft',
+   frameworks:'AI Safety Institute; Minister for AI; MoU with US CAISI specifically; pre-deployment access agreements with major labs; evaluated Claude Mythos Preview; deliberately pro-innovation philosophy.',
+   enforcement:'Soft influence; research coordination; MoUs with specific labs and CAISI.',
+   gap:'Deliberately avoids binding rules; pro-innovation bias limits teeth; MoU is with CAISI not a broad government pact.'},
+  {id:'usfed',label:'US Federal\nEO / CAISI',row:2,idx:5,type:'national',geography:'United States',power:'MEDIUM',enforce:'soft',
+   frameworks:'Executive Order on AI (2023, partially rolled back 2025); NIST AI RMF; CAISI — voluntary frameworks, best practice development, agency coordination; MoU with UK AISI.',
+   enforcement:'Voluntary; federal coordination; no comprehensive AI legislation.',
+   gap:'No federal AI law; Trump rollback reduced requirements; patchwork creates regulatory arbitrage across states.'},
+  {id:'ftc',label:'FTC',row:2,idx:6,type:'national',geography:'United States',power:'MEDIUM',enforce:'partial',
+   frameworks:'FTC — AI enforcement via consumer protection and unfair/deceptive practices authority; GenAI investigations (OpenAI, ChatGPT); Section 5 FTC Act as enforcement basis; AI Now Institute policy input.',
+   enforcement:'Enforcement authority; consent decrees; civil penalties; ongoing AI investigations.',
+   gap:'Catch-all authority rather than comprehensive AI mandate; politically vulnerable to deregulatory pressure.'},
+  {id:'cisa',label:'CISA / DOE',row:2,idx:7,type:'national',geography:'United States',power:'MEDIUM',enforce:'partial',
+   frameworks:'CISA: critical infrastructure cyber coordination; JCDC tabletop exercises on AI cyber risk; DOE/NNSA: evaluates AI models for nuclear/radiological risk using classified datasets; mentioned in Anthropic system cards.',
+   enforcement:'Coordination authority; some binding critical infrastructure reporting; classified evaluation authority.',
+   gap:'AI incident reporting from labs not mandatory; CISA capacity for AI-specific incidents still developing; Mythos deployment has no mandatory CISA reporting.'},
+  {id:'bis',label:'BIS / Export\nControls',row:2,idx:8,type:'compute',geography:'United States',power:'HIGH',enforce:'binding',
+   frameworks:'Bureau of Industry and Security — H100/A100 chip export controls; Diffusion Rule (2025); compute thresholds as de facto AI governance mechanism; most operationally powerful current governance tool in the entire landscape.',
+   enforcement:'Legally binding; criminal penalties; export license denial; foreign policy instrument.',
+   gap:'Blunt instrument; adversaries developing alternatives (Huawei Ascend); does not address capability risks within permitted jurisdictions.'},
+  {id:'china',label:'China\nCAC 2.0',row:2,idx:9,type:'national',geography:'China',power:'HIGH',enforce:'binding',
+   frameworks:'CAC AI Safety Governance Framework 2.0 — state-security-first; generative AI regulation, algorithm registry, content restrictions; parallel to international frameworks with no coordination; applies to domestic providers and foreign companies in China.',
+   enforcement:'Centralized enforcement; legally binding; significant compliance requirements.',
+   gap:'Diverges fundamentally from international transparency norms; bifurcates global governance landscape; no coordination with multilateral frameworks.'},
+  {id:'usca',label:'California\nSB-53',row:2,idx:10,type:'national',geography:'California, USA',power:'MEDIUM-HIGH',enforce:'binding',
+   frameworks:'SB-53 (Transparency in Frontier AI Act) — mandatory incident reporting (10^26 FLOP threshold), whistleblower protections, pre-deployment safety assessments; most operationally specific subnational AI governance framework.',
+   enforcement:'State-level legally binding; civil penalties; whistleblower protections create internal accountability channel.',
+   gap:'Jurisdictional limits; compute threshold may be too high for some risks; risk of federal preemption.'},
+  {id:'euoff',label:'EU AI\nOffice',row:2,idx:11,type:'national',geography:'European Union',power:'MEDIUM-HIGH',enforce:'binding',
+   frameworks:'AI Office (GPAI enforcement arm of EU AI Act); AI Board (member state coordination); developing GPAI Code of Practice with frontier labs (Anthropic, OpenAI, Google DeepMind, Microsoft, Meta, Mistral participating).',
+   enforcement:'Binding enforcement for GPAI models; fines; can demand access to models and data.',
+   gap:'Implementation capacity still building; GPAI Code of Practice process risks regulatory capture by labs who participate in drafting it.'},
+  {id:'euact',label:'EU AI\nAct',row:2,idx:12,type:'national',geography:'European Union',power:'HIGH',enforce:'binding',
+   frameworks:'Risk-based regulation; GPAI Code of Practice for frontier models; fines up to 7% of global annual turnover; extra-territorial reach — applies to any system deployed in the EU. Most comprehensive binding framework globally. Council of Europe Framework Convention informs.',
+   enforcement:'Legally binding; significant financial penalties; AI Office enforcement; market access leverage.',
+   gap:'Implementation complexity; GPAI frontier model obligations still being operationalized through Code of Practice; some labs may structurally avoid EU market.'},
+
+  // ROW 3: CORPORATE (15)
+  {id:'magic',label:'Magic',row:3,idx:0,type:'corporate',geography:'USA',power:'LOW-MEDIUM',enforce:'internal',
+   frameworks:'Magic AGI Readiness Policy — long-horizon agentic AI focus.',
+   enforcement:'Internal governance only.',
+   gap:'Speculative scope; limited public methodology; no external evaluation partnerships visible.'},
+  {id:'cohere',label:'Cohere',row:3,idx:1,type:'corporate',geography:'USA / Canada',power:'LOW-MEDIUM',enforce:'internal',
+   frameworks:'Cohere Secure AI Frontier Model Framework; Seoul Commitments signatory; enterprise deployment focus.',
+   enforcement:'Internal governance; Seoul voluntary commitments.',
+   gap:'Limited public transparency on safety evaluations; commercial enterprise orientation.'},
+  {id:'g42',label:'G42',row:3,idx:2,type:'corporate',geography:'UAE',power:'LOW-MEDIUM',enforce:'internal',
+   frameworks:'G42 Frontier AI Safety Framework; Seoul Commitments signatory; UAE state-connected; divested Chinese investments under US pressure in 2024.',
+   enforcement:'Internal governance; UAE NAIA oversight; Seoul commitments.',
+   gap:'Geopolitical complexity; UAE state connection creates dual accountability questions; limited independent oversight.'},
+  {id:'samsung',label:'Samsung /\nNaver',row:3,idx:3,type:'corporate',geography:'South Korea',power:'MEDIUM',enforce:'partial',
+   frameworks:'Samsung: Seoul Commitments signatory, Galaxy AI on-device; Naver: Seoul Commitments signatory, HyperCLOVA X; both subject to emerging Korean AI Basic Act.',
+   enforcement:'Internal governance; Seoul commitments; emerging Korean regulatory compliance.',
+   gap:'Korean AI Basic Act not yet enacted; limited frontier safety evaluation visibility internationally.'},
+  {id:'hf',label:'Hugging\nFace',row:3,idx:4,type:'corporate',geography:'USA / France',power:'MEDIUM',enforce:'partial',
+   frameworks:'Open-source AI platform hosting most publicly available models globally; model cards and evaluation infrastructure; significant influence on what AI capabilities are accessible; EU AI Act GPAI implications as platform.',
+   enforcement:'EU AI Act platform compliance; liability questions largely unresolved.',
+   gap:'Platform model means Hugging Face hosts models other labs would not release; no safety evaluation requirement for hosted models; this is the largest governance gap at the platform layer.'},
+  {id:'baidu',label:'Baidu /\nAlibaba',row:3,idx:5,type:'corporate',geography:'China',power:'MEDIUM',enforce:'partial',
+   frameworks:'Baidu: ERNIE Bot; Alibaba: Qwen model series; both China CAC-regulated; algorithm registry compliance; Alibaba Cloud has significant international deployment creating jurisdictional complexity.',
+   enforcement:'China CAC compliance domestically; EU AI Act for EU deployments.',
+   gap:'Governed entirely by CAC framework domestically; no transparency to international safety community; international deployments create accountability gaps.'},
+  {id:'mistral',label:'Mistral AI',row:3,idx:6,type:'corporate',geography:'France / EU',power:'MEDIUM',enforce:'partial',
+   frameworks:'Most significant European frontier lab; Mistral Large, Mixtral (open weights); participating in EU AI Office GPAI Code of Practice; advocating for open-source regulatory carve-outs; French government as investor.',
+   enforcement:'EU AI Act compliance (GPAI Code of Practice); French CNIL.',
+   gap:'Open-weight releases create same governance gap as Meta; lobbying for open-source carve-outs may weaken GPAI oversight; French state investor creates political complexity.'},
+  {id:'nvidia',label:'NVIDIA',row:3,idx:7,type:'corporate',geography:'USA',power:'MEDIUM',enforce:'partial',
+   frameworks:'Compute infrastructure for essentially all frontier labs; BIS export control compliance required; ecosystem influence via CUDA lock-in; NVIDIA Frontier AI Risk Assessment.',
+   enforcement:'BIS export control compliance; EU AI Act for EU operations.',
+   gap:'Safety framework does not address downstream use of compute sold to third parties; supply chain governance is indirect and blunt as a safety mechanism.'},
+  {id:'amazon',label:'Amazon',row:3,idx:8,type:'corporate',geography:'USA',power:'MEDIUM',enforce:'internal',
+   frameworks:'Amazon Frontier Model Safety Framework (8 risk dimensions); Frontier Model Forum member; Seoul Commitments signatory; AWS infrastructure means safety failures in Amazon-deployed models cascade across enterprise customers.',
+   enforcement:'Internal governance; EU AI Act; California SB-53.',
+   gap:'Limited public transparency; AWS scale means failures cascade; deployment-first orientation creates pressure to release ahead of safety confidence.'},
+  {id:'meta',label:'Meta',row:3,idx:9,type:'corporate',geography:'USA',power:'MEDIUM',enforce:'internal',
+   frameworks:'Meta Frontier AI Framework; Seoul Commitments signatory; Frontier Model Forum member; Llama open-weights releases create fundamental tension with safety governance architecture.',
+   enforcement:'Internal governance; EU AI Act; Seoul commitments.',
+   gap:'Open-source releases create permanent governance gap: once released, third parties can fine-tune without any oversight, removing all accountability mechanisms.'},
+  {id:'msft',label:'Microsoft',row:3,idx:10,type:'corporate',geography:'USA',power:'MEDIUM',enforce:'partial',
+   frameworks:'Microsoft Frontier Governance Framework; Seoul signatory; Frontier Model Forum member; major OpenAI investor; Azure deployment reach; governance responsibility for OpenAI-powered products is ambiguous.',
+   enforcement:'EU AI Act; California SB-53; internal governance.',
+   gap:'OpenAI relationship creates unresolved accountability gap; governance responsibility allocation between Microsoft and OpenAI unclear in both frameworks.'},
+  {id:'xai',label:'xAI *',row:3,idx:11,type:'corporate',geography:'USA',power:'MEDIUM',enforce:'internal',
+   frameworks:'xAI Risk Management Framework — Grok models; VCT, WMDP, Cybench, MASK benchmarks. * NOTABLY NOT a Seoul Commitments signatory — significant accountability gap given Grok capability level.',
+   enforcement:'Internal governance only; California SB-53.',
+   gap:'Seoul absent — least transparency of any major frontier lab on this map; loss-of-control evaluations described as speculative in own framework; limited external evaluation partnerships.'},
+  {id:'gdm',label:'Google\nDeepMind',row:3,idx:12,type:'corporate',geography:'USA / UK',power:'MEDIUM-HIGH',enforce:'partial',
+   frameworks:'Frontier Safety Framework v3.0; Seoul signatory; Frontier Model Forum member; UK AISI partnership; external evaluators (METR, Apollo); Gemini series.',
+   enforcement:'Internal governance; UK AISI partnership; EU AI Act; California SB-53.',
+   gap:'Self-governance; Alphabet coordination complexity; threshold determinations remain internal.'},
+  {id:'openai',label:'OpenAI',row:3,idx:13,type:'corporate',geography:'USA',power:'MEDIUM-HIGH',enforce:'partial',
+   frameworks:'Preparedness Framework v2; Seoul signatory; Frontier Model Forum member; external evaluators; PBC restructuring raises new accountability questions; GPT-4o, o3 series.',
+   enforcement:'Internal governance; EU AI Act; California SB-53; FTC investigation.',
+   gap:'PBC restructuring accountability questions unresolved; competitive pressure may conflict with safety commitments.'},
+  {id:'anthropic',label:'Anthropic',row:3,idx:14,type:'corporate',geography:'USA',power:'MEDIUM-HIGH',enforce:'partial',
+   frameworks:'RSP v3.1; Seoul signatory; Frontier Model Forum member; external evaluators (METR, Epoch AI, Apollo, UK AISI, DOE/NNSA); Claude Mythos Preview deployed via Project Glasswing to unnamed partners — first non-public frontier model release.',
+   enforcement:'Internal RSP Officer qualitative threshold determinations; EU AI Act; California SB-53; partial external evaluation.',
+   gap:'Threshold determinations rest on RSP Officer qualitative judgment by own admission; Project Glasswing deployment has no public accountability mechanism; evaluation infrastructure failed to catch worst behaviors before internal deployment (system card Section 4.1.4).'},
+];
+
+const edges=[
+  // Intergovernmental connections
+  {f:'g7',t:'bletchley',type:'influence'},{f:'g7',t:'seoul',type:'produced'},
+  {f:'bletchley',t:'seoul',type:'produced'},
+  {f:'oecd',t:'euact',type:'influence'},{f:'oecd',t:'usfed',type:'influence'},{f:'oecd',t:'uk',type:'influence'},
+  {f:'oecd',t:'canada',type:'influence'},{f:'oecd',t:'skorea',type:'influence'},
+  {f:'coe',t:'euact',type:'influence'},{f:'coe',t:'uk',type:'influence'},
+  {f:'un',t:'euact',type:'influence'},{f:'un',t:'brazil',type:'influence'},
+  // Voluntary → national
+  {f:'civil',t:'euact',type:'influence'},{f:'civil',t:'usfed',type:'influence'},{f:'civil',t:'usca',type:'influence'},{f:'civil',t:'ftc',type:'influence'},
+  {f:'iso',t:'euact',type:'influence'},
+  // Seoul signatories
+  {f:'seoul',t:'anthropic',type:'signatory'},{f:'seoul',t:'openai',type:'signatory'},{f:'seoul',t:'gdm',type:'signatory'},
+  {f:'seoul',t:'msft',type:'signatory'},{f:'seoul',t:'meta',type:'signatory'},{f:'seoul',t:'amazon',type:'signatory'},
+  {f:'seoul',t:'cohere',type:'signatory'},{f:'seoul',t:'samsung',type:'signatory'},{f:'seoul',t:'g42',type:'signatory'},
+  // xAI intentionally NOT a Seoul signatory
+  // FMF members
+  {f:'fmf',t:'anthropic',type:'member'},{f:'fmf',t:'openai',type:'member'},{f:'fmf',t:'gdm',type:'member'},
+  {f:'fmf',t:'msft',type:'member'},{f:'fmf',t:'meta',type:'member'},{f:'fmf',t:'amazon',type:'member'},
+  // Evaluation orgs
+  {f:'metr',t:'anthropic',type:'evaluates'},{f:'metr',t:'openai',type:'evaluates'},{f:'metr',t:'gdm',type:'evaluates'},
+  {f:'epoch',t:'anthropic',type:'evaluates'},{f:'epoch',t:'gdm',type:'evaluates'},
+  {f:'apollo',t:'anthropic',type:'evaluates'},{f:'apollo',t:'openai',type:'evaluates'},{f:'apollo',t:'gdm',type:'evaluates'},{f:'apollo',t:'msft',type:'evaluates'},
+  // EU enforcement chain
+  {f:'euoff',t:'euact',type:'enforces'},
+  {f:'euact',t:'anthropic',type:'regulatory'},{f:'euact',t:'openai',type:'regulatory'},{f:'euact',t:'gdm',type:'regulatory'},
+  {f:'euact',t:'msft',type:'regulatory'},{f:'euact',t:'meta',type:'regulatory'},{f:'euact',t:'nvidia',type:'regulatory'},
+  {f:'euact',t:'amazon',type:'regulatory'},{f:'euact',t:'mistral',type:'regulatory'},{f:'euact',t:'hf',type:'regulatory'},
+  {f:'euact',t:'baidu',type:'regulatory'},
+  // California SB-53
+  {f:'usca',t:'anthropic',type:'regulatory'},{f:'usca',t:'openai',type:'regulatory'},{f:'usca',t:'gdm',type:'regulatory'},
+  {f:'usca',t:'xai',type:'regulatory'},{f:'usca',t:'msft',type:'regulatory'},{f:'usca',t:'meta',type:'regulatory'},
+  {f:'usca',t:'amazon',type:'regulatory'},{f:'usca',t:'nvidia',type:'regulatory'},
+  // UK AISI
+  {f:'uk',t:'anthropic',type:'partnership'},{f:'uk',t:'gdm',type:'partnership'},{f:'uk',t:'usfed',type:'partnership'},
+  // US Federal
+  {f:'usfed',t:'cisa',type:'coordinates'},{f:'usfed',t:'bis',type:'coordinates'},
+  {f:'usfed',t:'anthropic',type:'influence'},{f:'usfed',t:'openai',type:'influence'},
+  // FTC enforcement
+  {f:'ftc',t:'openai',type:'regulatory'},{f:'ftc',t:'anthropic',type:'regulatory'},{f:'ftc',t:'meta',type:'regulatory'},
+  // CISA/DOE evaluates
+  {f:'cisa',t:'anthropic',type:'coordinates'},{f:'cisa',t:'openai',type:'coordinates'},
+  // BIS compute
+  {f:'bis',t:'nvidia',type:'compute'},{f:'bis',t:'china',type:'compute'},
+  // China CAC
+  {f:'china',t:'baidu',type:'regulatory'},
+  {f:'china',t:'samsung',type:'influence'},{f:'china',t:'g42',type:'influence'},
+  // Regional
+  {f:'skorea',t:'samsung',type:'regulatory'},
+  {f:'uae',t:'g42',type:'regulatory'},
+  // ISO standards
+  {f:'iso',t:'anthropic',type:'standards'},{f:'iso',t:'openai',type:'standards'},{f:'iso',t:'msft',type:'standards'},
+];
+
+const NM={};
+nodes.forEach(n=>{n.x=cx(n.row,n.idx);n.y=ROW_Y[n.row];n.r=PR[n.power]||18;n.col=NCOL[n.type]||'#888';NM[n.id]=n;});
+
+const NS2='http://www.w3.org/2000/svg';
+const svg=document.getElementById('map');
+function mk(tag,a={}){const e=document.createElementNS(NS2,tag);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
+
+const defs=mk('defs');
+Object.entries(MC).forEach(([tp,col])=>{
+  const m=mk('marker',{id:'a-'+tp,markerWidth:'7',markerHeight:'7',refX:'5.5',refY:'3.5',orient:'auto'});
+  m.appendChild(mk('path',{d:'M0,0 L0,7 L6.5,3.5 z',fill:col,opacity:'0.85'}));
+  defs.appendChild(m);
+});
+svg.appendChild(defs);
+
+ROW_Y.forEach((y,i)=>{
+  svg.appendChild(mk('rect',{x:0,y:y-76,width:1500,height:152,fill:ROW_BG[i],rx:5}));
+  const t=mk('text',{x:14,y:y-56,fill:['#4A3A10','#3A2A5A','#1A3A5A','#1A4A38'][i],'font-size':'8','font-weight':'700','letter-spacing':'0.14','font-family':'system-ui'});
+  t.textContent=ROW_LABELS[i];svg.appendChild(t);
+});
+
+const EG=mk('g');svg.appendChild(EG);
+const NG=mk('g');svg.appendChild(NG);
+
+edges.forEach(e=>{
+  const A=NM[e.f],B=NM[e.t];if(!A||!B)return;
+  const st=ES[e.type]||ES.influence;
+  const dx=B.x-A.x,dy=B.y-A.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
+  const nx=dx/dist,ny=dy/dist;
+  const sx=A.x+A.r*nx,sy=A.y+A.r*ny,ex=B.x-B.r*nx,ey=B.y-B.r*ny;
+  let d;
+  if(A.row!==B.row){d='M'+sx.toFixed(1)+','+sy.toFixed(1)+' L'+ex.toFixed(1)+','+ey.toFixed(1);}
+  else{const cpx=(A.x+B.x)/2,cpy=[0,1].includes(A.row)?A.y-68:A.y+68;d='M'+sx.toFixed(1)+','+sy.toFixed(1)+' Q'+cpx.toFixed(1)+','+cpy+' '+ex.toFixed(1)+','+ey.toFixed(1);}
+  EG.appendChild(mk('path',{d,fill:'none',stroke:st.c,'stroke-width':st.w,'stroke-dasharray':st.d,'stroke-opacity':0.1,'marker-end':'url(#a-'+e.type+')','data-f':e.f,'data-t':e.t,'data-type':e.type}));
+});
+
+const NE={};
+nodes.forEach(n=>{
+  const g=mk('g',{'data-id':n.id,cursor:'pointer',transform:'translate('+n.x.toFixed(1)+','+n.y+')'});
+  const glow=mk('circle',{cx:0,cy:0,r:n.r+8,fill:'none',stroke:n.col,'stroke-width':1.5,opacity:0,'class':'glow'});
+  const ef=ENF[n.enforce]||ENF.internal;
+  const circ=mk('circle',{cx:0,cy:0,r:n.r,fill:n.col,'fill-opacity':0.1,stroke:n.col,'stroke-width':ef.w,'stroke-dasharray':ef.d,'class':'circ'});
+  const lines=n.label.split('\n');
+  const fs=n.r>26?'8.5':n.r>17?'8':'7.5';
+  const baseY=lines.length>1?-5.5:0;
+  const txt=mk('text',{'text-anchor':'middle','dominant-baseline':'middle',fill:n.col,'font-size':fs,'font-weight':'600','font-family':'system-ui','pointer-events':'none'});
+  lines.forEach((ln,li)=>{const ts=mk('tspan',{x:0,dy:li===0?baseY+'px':'10px'});ts.textContent=ln;txt.appendChild(ts);});
+  g.appendChild(glow);g.appendChild(circ);g.appendChild(txt);
+  g.addEventListener('click',ev=>{ev.stopPropagation();selectNode(n.id);});
+  NG.appendChild(g);NE[n.id]=g;
+});
+
+let sel=null,activeFilter='all';
+
+function applyFilter(){
+  nodes.forEach(n=>{
+    const g=NE[n.id],circ=g.querySelector('.circ'),txt=g.querySelector('text');
+    const vis=activeFilter==='all'||n.type===activeFilter;
+    if(!sel){circ.setAttribute('fill-opacity',vis?0.1:0.02);txt.setAttribute('opacity',vis?1:0.08);circ.setAttribute('stroke-opacity',vis?1:0.15);}
+  });
+  EG.querySelectorAll('path').forEach(p=>{
+    if(sel)return;
+    const A=NM[p.getAttribute('data-f')],B=NM[p.getAttribute('data-t')];
+    if(!A||!B)return;
+    const av=activeFilter==='all'||A.type===activeFilter,bv=activeFilter==='all'||B.type===activeFilter;
+    p.setAttribute('stroke-opacity',(av||bv)?0.1:0.01);
+  });
+}
+
+document.getElementById('filters').addEventListener('click',e=>{
+  if(!e.target.dataset.filter)return;
+  clearSel();
+  activeFilter=e.target.dataset.filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===activeFilter));
+  applyFilter();
+});
+
+function selectNode(id){
+  if(sel===id){clearSel();return;}sel=id;
+  const fromS=new Set(),toS=new Set(),et={};
+  edges.forEach(e=>{if(e.f===id){toS.add(e.t);et[e.t]=e.type;}if(e.t===id){fromS.add(e.f);et[e.f]=e.type;}});
+  const conn=new Set([...fromS,...toS,id]);
+  nodes.forEach(n=>{
+    const g=NE[n.id],circ=g.querySelector('.circ'),glow=g.querySelector('.glow'),txt=g.querySelector('text');
+    const ef=ENF[n.enforce]||ENF.internal;
+    if(n.id===id){circ.setAttribute('fill-opacity',0.38);circ.setAttribute('stroke-width',ef.w*1.6);glow.setAttribute('opacity',0.7);txt.setAttribute('opacity',1);circ.setAttribute('stroke-opacity',1);}
+    else if(conn.has(n.id)){circ.setAttribute('fill-opacity',0.2);circ.setAttribute('stroke-width',ef.w);glow.setAttribute('opacity',0);txt.setAttribute('opacity',1);circ.setAttribute('stroke-opacity',1);}
+    else{circ.setAttribute('fill-opacity',0.02);circ.setAttribute('stroke-width',0.7);glow.setAttribute('opacity',0);txt.setAttribute('opacity',0.08);circ.setAttribute('stroke-opacity',0.1);}
+  });
+  EG.querySelectorAll('path').forEach(p=>{
+    const f=p.getAttribute('data-f'),t=p.getAttribute('data-t'),tp=p.getAttribute('data-type');
+    const st=ES[tp]||ES.influence;
+    if(f===id||t===id){p.setAttribute('stroke-opacity',st.o);p.setAttribute('stroke-width',st.w*1.8);}
+    else{p.setAttribute('stroke-opacity',0.02);p.setAttribute('stroke-width',0.8);}
+  });
+  const n=NM[id];
+  const PC={'LOW':'#2A4050','LOW-MEDIUM':'#2A5068','MEDIUM':'#3A6A88','MEDIUM-HIGH':'#4A8AAA','HIGH':'#C8882A'};
+  const ELb={none:'No enforcement',soft:'Soft/political',pending:'Pending',partial:'Partial enforcement',binding:'Legally binding',internal:'Internal only'};
+  const TL={intergovernmental:'Intergovernmental',voluntary:'Voluntary',evaluation:'Evaluation Org',national:'National/Regulatory',compute:'Compute/Export',corporate:'Corporate Lab'};
+  let mh='<div class="info-name">'+n.label.replace('\n',' ')+'</div>'
+    +'<div class="info-geo">'+n.geography+' \u00b7 '+(TL[n.type]||n.type)+'</div>'
+    +'<div class="info-badges">'
+    +'<span class="badge" style="background:'+PC[n.power]+'22;color:'+PC[n.power]+';border:1px solid '+PC[n.power]+'44">'+n.power+' POWER</span>'
+    +'<span class="badge" style="background:#1A304022;color:#4A7090;border:1px solid #1A304044">'+(ELb[n.enforce]||n.enforce)+'</span>'
+    +'</div>'
+    +'<div class="info-section"><div class="info-label">Frameworks / Role</div><div class="info-val">'+n.frameworks+'</div></div>'
+    +'<div class="info-section"><div class="info-label">Enforcement Mechanism</div><div class="info-val">'+n.enforcement+'</div></div>'
+    +'<div class="info-section"><div class="info-label">Key Gap</div><div class="info-gap">'+n.gap+'</div></div>';
+  if(n.id==='xai')mh+='<div style="font-size:9px;color:#8A5050;margin-top:4px;font-style:italic">\u26a0 xAI is absent from Seoul Commitments \u2014 no signatory edge is drawn on this map</div>';
+  let ch='<div class="info-label" style="margin-bottom:6px">Connections ('+(fromS.size+toS.size)+')</div><div class="conn-list">';
+  if(fromS.size){ch+='<div style="font-size:8px;color:#243040;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Receives from</div>';
+    fromS.forEach(fid=>{const fn=NM[fid],tp=et[fid],col=MC[tp]||'#888';ch+='<div class="conn-item"><div class="conn-dot" style="background:'+col+'"></div><span class="conn-arrow" style="color:#3A5A78">\u2190</span><span>'+fn.label.replace('\n',' ')+'</span><span class="conn-type">('+EL[tp]+')</span></div>';});}
+  if(toS.size){ch+='<div style="font-size:8px;color:#243040;text-transform:uppercase;letter-spacing:.1em;margin:6px 0 3px">Connects to</div>';
+    toS.forEach(tid=>{const tn=NM[tid],tp=et[tid],col=MC[tp]||'#888';ch+='<div class="conn-item"><div class="conn-dot" style="background:'+col+'"></div><span class="conn-arrow" style="color:#3A7A50">\u2192</span><span>'+tn.label.replace('\n',' ')+'</span><span class="conn-type">('+EL[tp]+')</span></div>';});}
+  if(!fromS.size&&!toS.size)ch+='<div style="font-size:10px;color:#243040">No mapped connections</div>';
+  ch+='</div>';
+  document.getElementById('info-main').innerHTML=mh;
+  document.getElementById('info-conn').innerHTML=ch;
+  document.getElementById('info').classList.add('visible');
+}
+function clearSel(){
+  sel=null;
+  nodes.forEach(n=>{const g=NE[n.id],ef=ENF[n.enforce]||ENF.internal;g.querySelector('.circ').setAttribute('fill-opacity',0.1);g.querySelector('.circ').setAttribute('stroke-width',ef.w);g.querySelector('.circ').setAttribute('stroke-opacity',1);g.querySelector('.glow').setAttribute('opacity',0);g.querySelector('text').setAttribute('opacity',1);});
+  EG.querySelectorAll('path').forEach(p=>{p.setAttribute('stroke-opacity',0.1);p.setAttribute('stroke-width',1);});
+  applyFilter();
+  document.getElementById('info').classList.remove('visible');
+}
+svg.addEventListener('click',clearSel);
+applyFilter();
+</script>
+</body>
+</html>
